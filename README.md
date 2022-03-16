@@ -41,7 +41,7 @@ The configuration above should be fairly self explanatory.  Some less obvious co
 * **postprocess / cmd** - This is a command that is run after the process has been completed successfully.  This is a placeholder I put in for future use.  I may end up doing some more fun stuff with this like kicking off a [Node RED](https://nodered.org/) workflow to perform further actions like sending [Gotify](https://gotify.net/) notifications.
 
 ## Docker compose example
-Here is a basic example of a *docker-compose.yml* file for using this image.  I have not uploaded this to Docker Hub yet.
+Here is a basic example of a *docker-compose.yml* file for using this image.
 
 **NOTE** - this image is based on the [LinuxServer.io](https://www.linuxserver.io/) base image.  That's why you will see the standard LSIO logo on startup.
 
@@ -49,7 +49,7 @@ Here is a basic example of a *docker-compose.yml* file for using this image.  I 
 version: "2.1"
 services:
   comcutter:
-    image: comcutter
+    image: bljohnsondev/comcutter
     container_name: comcutter
     environment:
       - PUID=1000
