@@ -35,7 +35,7 @@ The configuration above should be fairly self explanatory.  Some less obvious co
 * **apikey** - This is your own generated apikey.  You can assign whatever you want here but it just provides some basic protection for your API endpoint.  It is required.
 * **log_dir** - This is the directory where the *comcutter.log* file resides.  If you would rather log to console then omit this.
 * **library_dir** - This is the directory where the media is located.  This is usually the mounted volume to your media.
-* **cmd** - This is the command that is run to process the video file.  This should be either */usr/local/bin/comcut* or */usr/local/bin/comchap*
+* **cmd** - This is the command that is run to process the video file.  This should be either */usr/local/bin/comcut* or */usr/local/bin/comchap*.
 * **timeout** - This is the timeout period in seconds for the processing command.  By default I have it set to 5 minutes.  If the process takes longer than this it will be aborted and an error thrown in the log files.
 * **size_percentage** - This is just to ensure that you didn't start out with a 2 GB video file and after cutting commercials it ended up being 250K.  This is a sign of a problem during the commercial skipping process.  This is the threshold of the percentage of the original file size.  the default value is 0.7 which means that the final version of the file should be at least 70% as large as the original.
 * **postprocess / cmd** - This is a command that is run after the process has been completed successfully.  This is a placeholder I put in for future use.  I may end up doing some more fun stuff with this like kicking off a [Node RED](https://nodered.org/) workflow to perform further actions like sending [Gotify](https://gotify.net/) notifications.
@@ -68,6 +68,17 @@ services:
 	* **config** - This is where the *comskip.ini* and *config.yml* files reside
 	* **logging** - This is where the *comcutter.log* file resides
 * **library** - This is the directory where your media is stored.
+
+## Example script to call API
+
+```bash
+#!/bin/bash
+
+curl -X POST \
+  http://localhost:8080/comskip \
+  -H 'Content-Type: application/json' \
+  -d '{"api": "YOUR_GENERATED_API_KEY", "file": "showname/myshow-S02E01.ts"}'
+```
 
 ## Other things
 
