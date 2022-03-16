@@ -16,6 +16,6 @@ if [ ! -d "/data" ] || [ ! -d "/data/config" ] || [ ! -d "/data/logs" ]; then
     cp /defaults/config.yml /data/config/config.yml
   fi
 
-  chown -R abc:abc /data
+  chown -R abc:abc /data /comlistener
 fi
 
