@@ -1,4 +1,6 @@
 #!/bin/bash
 
-cd /comlistener
-./comlistener.py
+cd /comlistener || exit
+
+exec \
+  s6-setuidgid abc python3 /comlistener/comlistener.py
