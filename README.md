@@ -37,7 +37,7 @@ The configuration above should be fairly self explanatory.  Some less obvious co
 * **library_dir** - This is the directory where the media is located.  This is usually the mounted volume to your media.
 * **cmd** - This is the command that is run to process the video file.  This should be either */usr/local/bin/comcut* or */usr/local/bin/comchap*.
 * **timeout** - This is the timeout period in seconds for the processing command.  By default I have it set to 5 minutes.  If the process takes longer than this it will be aborted and an error thrown in the log files.
-* **size_percentage** - This is just to ensure that you didn't start out with a 2 GB video file and after cutting commercials it ended up being 250K.  This is a sign of a problem during the commercial skipping process.  This is the threshold of the percentage of the original file size.  the default value is 0.7 which means that the final version of the file should be at least 70% as large as the original.
+* **size_percentage** - This is just to ensure that you didn't start out with a 2 GB video file and after cutting commercials it ended up being 250K.  This is a sign of a problem during the commercial skipping process.  This is the threshold of the percentage of the original file size.  The default value is 0.7 which means that the final version of the file should be at least 70% as large as the original.
 * **postprocess / cmd** - This is a command that is run after the process has been completed successfully.  This is a placeholder I put in for future use.  I may end up doing some more fun stuff with this like kicking off a [Node RED](https://nodered.org/) workflow to perform further actions like sending [Gotify](https://gotify.net/) notifications.
 
 ## Docker compose example
