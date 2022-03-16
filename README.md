@@ -1,7 +1,7 @@
 # Comcutter
 This is a basic container that wraps the [Comskip](https://github.com/erikkaashoek/Comskip) and [Comchap](https://github.com/BrettSheleski/comchap) utilities.  It utilizes a REST api endpoint to accept filenames for the commercial skipping process.  I'm planning on using it with the following workflow:
 
-1. OTA shows get recorded by Jellyin and saved into a *DVR* directory on an NFS share
+1. OTA shows get recorded by [Jellyin](https://jellyfin.org/) and saved into a *DVR* directory on an NFS share
 2. A Jellyfin post processing script uses *curl* to make a call to this API endpoint
 3. After receiving the API call it uses the Comskip and Comchap utilities to remove commercials
 4. Once the commercial skipping process is complete another post processing script can be called
