@@ -1,0 +1,18 @@
+api:
+  apikey: "YOUR_GENERATED_API_KEY" # replace this with your own generated key
+  log_dir: "/data/logs"
+  log_level: "debug"
+  library_dir: "/library"
+  port: 8080
+
+comskip:
+  comskip_cmd: "/usr/local/bin/comskip"
+  comskip_ini: "/data/config/comskip.ini"
+  cmd: "/usr/local/bin/comcut"
+  keep_edl: true
+  timeout: 300
+  size_percentage: 0.7
+
+postprocess:
+  # cmd: "/data/scripts/postcall.sh"
+
