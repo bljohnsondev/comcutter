@@ -40,6 +40,13 @@ The configuration above should be fairly self explanatory.  Some less obvious co
 * **size_percentage** - This is just to ensure that you didn't start out with a 2 GB video file and after cutting commercials it ended up being 250K.  This is a sign of a problem during the commercial skipping process.  This is the threshold of the percentage of the original file size.  The default value is 0.7 which means that the final version of the file should be at least 70% as large as the original.
 * **postprocess / cmd** - This is a command that is run after the process has been completed successfully.  This is a placeholder I put in for future use.  I may end up doing some more fun stuff with this like kicking off a [Node RED](https://nodered.org/) workflow to perform further actions like sending [Gotify](https://gotify.net/) notifications.
 
+### Additional advanced parameters
+
+* **host** - This is the IP address that the server will listen on.  By default it listens on all addresses with `0.0.0.0`.
+* **uri** - This is the *URI* that the API route uses.  By default the URI is `/comskip`.
+
+If you were to change *host* to localhost `127.0.0.1` , *port* to `9000` and *uri* to `/comcutter` then the server will listen on `127.0.0.1:9000/comcutter`.
+
 ## Docker compose example
 Here is a basic example of a *docker-compose.yml* file for using this image.
 
@@ -70,6 +77,8 @@ services:
 * **library** - This is the directory where your media is stored.
 
 ## Example script to call API
+
+This example bash script uses *curl* to kick off a commercial skip operation on the host file `/your/path/to/media/library/showname/myshow-S02E01.ts`.  Note that you do not pass the entire path as the file but instead the location of the file relative to your `/library` volume mount.
 
 ```bash
 #!/bin/bash
