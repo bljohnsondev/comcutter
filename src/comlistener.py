@@ -48,7 +48,11 @@ else:
 comskipper = CommercialSkipper(logging, config)
 
 apikey = config.get("api", "apikey")
+host = config.get("api", "host") or "0.0.0.0"
 port = config.get("api", "port") or 8080
+uri = config.get("api", "uri") or "/comskip"
+if not uri.startswith("/"):
+    uri = "/" + uri
 
 if apikey is None or apikey == "":
     print("could not find api:apikey in config file")
@@ -57,7 +61,7 @@ if apikey is None or apikey == "":
 def prefixlogmsg(request, msg):
     return "[%s] %s" % (request.remote_addr, msg)
 
-@api.route('/comskip', methods=['POST'])
+@api.route(uri, methods=['POST'])
 def index():
     data = json.loads(request.data)
 
@@ -84,5 +88,8 @@ def index():
     )
 
 if __name__ == '__main__':
-    print("listening on port " + str(port))
-    serve(api, host="0.0.0.0", port=port)
+    print("listening %s:%s%s" % (host, str(port), uri))
+    try:
+        serve(api, host=host, port=port)
+    except Exception as err:
+        print("error starting api server: " + str(err))
