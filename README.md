@@ -1,12 +1,12 @@
 # Comcutter
-This is a basic container that wraps the [Comskip](https://github.com/erikkaashoek/Comskip) and [Comchap](https://github.com/BrettSheleski/comchap) utilities.  It utilizes a REST api endpoint to accept filenames for the commercial skipping process.  I'm planning on using it with the following workflow:
+This is a basic container that wraps the [Comskip](https://github.com/erikkaashoek/Comskip) and [Comchap](https://github.com/BrettSheleski/comchap) utilities.  It utilizes a REST api endpoint to accept filenames for the commercial skipping process.  I'm using it with the following workflow:
 
 1. OTA shows get recorded by [Jellyin](https://jellyfin.org/) and saved into a *DVR* directory on an NFS share
 2. A Jellyfin post processing script uses *curl* to make a call to this API endpoint
-3. After receiving the API call it uses the Comskip and Comchap utilities to remove commercials
+3. After receiving the API call it uses the Comskip utility to remove commercials
 4. Once the commercial skipping process is complete another post processing script can be called
 
-Doing it this way will allow me to let an external container separate from Jellyfin handle the commerical skipping procedure.  This can be run on a separate machine as long as there is a volume mount from this container to the NFS share.
+Doing it this way allows me to let an external container separate from Jellyfin handle the commerical skipping procedure.  This can be run on a separate machine as long as there is a volume mount from this container to the NFS share.
 
 ## Config file
 The config file is a YAML file and looks something like this:
@@ -83,13 +83,18 @@ This example bash script uses *curl* to kick off a commercial skip operation on 
 ```bash
 #!/bin/bash
 
+filepath="$@"
+
+# Jellyfin passes the full path to the file as the command argument.
+# I perform a "sed" with regex here to strip off the directory prefix here
+
 curl -X POST \
   http://localhost:8080/comskip \
   -H 'Content-Type: application/json' \
-  -d '{"api": "YOUR_GENERATED_API_KEY", "file": "showname/myshow-S02E01.ts"}'
+  -d "{\"api\": \"YOUR_GENERATED_API_KEY\", \"file\": \"${filepath}\"}"
 ```
 
 ## Other things
 
 * The API server uses a queue.  Calling it should give you an immediate JSON response saying that the file is being processed.  This **does not** mean that the process is complete.  This only means that the file has been accepted and added to the queue.  Due to the fact that the commercial skipping process could take a significant amount of time the API server does not block the request until complete.
-* Can you run this without Docker?  Absolutely.  Clone the repo and just use the Python code in the *src* directory.  Copy the default *config.yml* file in the `/root/defaults` directory in the same directory with the Python code and modify it to fit your needs.  By default it looks in the current directory for the config file.  Run the `comlistener.py` file to start up the API server.
+* Can you run this without Docker?  Absolutely.  Clone the repo and just use the Python code in the *src* directory.  Copy the default *config.yml* file in the `/root/defaults` directory in the same folder with the Python code and modify it to fit your needs.  By default it looks in the current directory for the config file.  Run the `comlistener.py` file to start up the API server.
