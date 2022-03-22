@@ -78,15 +78,14 @@ services:
 
 ## Example script to call API
 
-This example bash script uses *curl* to kick off a commercial skip operation on the host file `/your/path/to/media/library/showname/myshow-S02E01.ts`.  Note that you do not pass the entire path as the file but instead the location of the file relative to your `/library` volume mount.
+This example bash script uses *curl* to kick off a commercial skip operation.  I am using a similar script for post processing with Jellyfin.  Jellyfin calls this and passes the full file path to the recording as the command argument.
+
+Note that the file path will be specific to the Jellyfin container.  If the Jellyfin library mount (for example `/library`) differs from the Comcutter library mount (for example `/data/library`) you will need to use `sed` or some other utility to strip this from the path.
 
 ```bash
 #!/bin/bash
 
 filepath="$@"
-
-# Jellyfin passes the full path to the file as the command argument.
-# I perform a "sed" with regex to strip off the directory prefix here
 
 curl -X POST \
   http://localhost:8080/comskip \
