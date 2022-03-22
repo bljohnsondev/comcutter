@@ -80,7 +80,7 @@ services:
 
 This example bash script uses *curl* to kick off a commercial skip operation.  I am using a similar script for post processing with Jellyfin.  Jellyfin calls this and passes the full file path to the recording as the command argument.
 
-Note that the file path will be specific to the Jellyfin container.  If the Jellyfin library mount (for example `/library`) differs from the Comcutter library mount (for example `/data/library`) you will need to use `sed` or some other utility to strip this from the path.
+Note that the file path will be specific to the Jellyfin container.  Since Jellyfin passes the full absolute file path as an argument I'm using the `sed` command to strip the volume mount from the file path so it only passes the relative path to the API.  In this example it passes the full file path.
 
 ```bash
 #!/bin/bash
