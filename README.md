@@ -86,7 +86,7 @@ This example bash script uses *curl* to kick off a commercial skip operation on 
 filepath="$@"
 
 # Jellyfin passes the full path to the file as the command argument.
-# I perform a "sed" with regex here to strip off the directory prefix here
+# I perform a "sed" with regex to strip off the directory prefix here
 
 curl -X POST \
   http://localhost:8080/comskip \
