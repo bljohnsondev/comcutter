@@ -80,19 +80,25 @@ services:
 
 This example bash script uses *curl* to kick off a commercial skip operation.  I am using a similar script for post processing with Jellyfin.  Jellyfin calls this and passes the full file path to the recording as the command argument.
 
-Note that the file path will be specific to the Jellyfin container.  Since Jellyfin passes the full absolute file path as an argument I'm using the `sed` command to strip the volume mount from the file path so it only passes the relative path to the API.  In this example it passes the full file path.
+Note that the file path will be specific to the Jellyfin container.  Since Jellyfin passes the full absolute file path as an argument I'm using the `cut` command to remove beginning of the path to convert the absolute path to relative.  Here is a simple example:
 
 ```bash
 #!/bin/bash
 
 filepath="$@"
 
+# example file - '/data/media/dvr/Family Guy/Season 22/Family Guy S22E05 Old World Harm.ts'
+stripped=`echo "$filepath" | cut -c 12-`
+
 curl -X POST \
-  http://localhost:8080/comskip \
+  http://localhost:9090/comskip \
   -H 'Content-Type: application/json' \
-  -d "{\"api\": \"YOUR_GENERATED_API_KEY\", \"file\": \"${filepath}\"}"
+  -d "{\"api\": \"YOUR_GENERATED_API_KEY\", \"file\": \"${stripped}\"}"
 ```
 
+In this example it removes the first 12 characters `/data/media/` resulting in a relative path of `/dvr/Family Guy/...`
+
+This is required because the full absolute path sent by Jellyfin may not necessarily match the volume path mounted into the comcutter container.
 ## Other things
 
 * The API server uses a queue.  Calling it should give you an immediate JSON response saying that the file is being processed.  This **does not** mean that the process is complete.  This only means that the file has been accepted and added to the queue.  Due to the fact that the commercial skipping process could take a significant amount of time the API server does not block the request until complete.
